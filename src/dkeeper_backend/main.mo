@@ -25,4 +25,9 @@ actor Dkeeper {
 
   };
 
+  public query func readNotes(): async [Note] {
+    return List.toArray(notes);
+
+  };
+
   }

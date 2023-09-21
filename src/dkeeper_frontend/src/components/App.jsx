@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
@@ -12,9 +12,22 @@ function App() {
   function addNote(newNote) {
     setNotes(prevNotes => {
       dkeeper_backend.createNote(newNote.title, newNote.content)
-      return [...prevNotes, newNote];
+      return [newNote, ...prevNotes];
     });
   }
+
+  useEffect(() => {
+    console.log("useEffect is triggered")
+    fetchData();
+    // an empty array, so it stops once this has been completed once
+    // preventing it to become an infinite loop
+  }, []);
+
+  async function fetchData() {
+    const notesArray = await dkeeper_backend.readNotes();
+    setNotes(notesArray);
+  }
+
 
   function deleteNote(id) {
     setNotes(prevNotes => {
